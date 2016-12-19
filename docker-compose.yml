@@ -1,0 +1,42 @@
+version: '2'
+services:
+  datacapture:
+    # https://github.com/ministryofjustice/tax-tribunals-datacapture
+    build: tax-tribunals-datacapture/
+    env_file: .env.datacapture
+    links:
+      - uploader
+      - datacapture-db:db
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./tax-tribunals-datacapture/run.sh:/usr/src/app/run.sh
+  # Uploader API
+  uploader:
+    # https://github.com/ministryofjustice/mojfile-uploader
+    build: mojfile-uploader
+    entrypoint: puma
+    env_file: .env.mojfile-uploader
+    volumes:
+      - ./mojfile-uploader/run.sh:/usr/src/app/run.sh
+    ports:
+      - "9292:9292"
+    links:
+      - clamav-rest
+  clamav:
+    # https://github.com/ministryofjustice/moj-clamav-daemon
+    image: registry.service.dsd.io/ministryofjustice/clamav:0.1.0
+  clamav-rest:
+    # https://github.com/ministryofjustice/moj-clamav-rest
+    image: registry.service.dsd.io/ministryofjustice/clamav-rest:0.1.0
+    links:
+      - clamav:clamav-server
+    environment:
+      HOST: clamav-server
+      PORT: 3310
+    depends_on:
+      - clamav
+    ports:
+      - 8080:8080
+  datacapture-db:
+    image: postgres
