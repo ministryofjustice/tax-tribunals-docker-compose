@@ -1,8 +1,17 @@
 build:
 	docker-compose build
 
-run:
+up:
 	docker-compose up
+
+down:
+	docker-compose down
+
+dev-up:
+	docker-compose -f docker-compose-dev.yml up
+
+dev-down:
+	docker-compose -f docker-compose-dev.yml down
 
 # Run this in a separate terminal window, after starting the system
 # You should only need to do this once, although you will have to run
@@ -22,9 +31,13 @@ init-fees:
 	docker-compose exec fees rails assets:clobber
 	docker-compose exec fees rails assets:precompile
 
-# Kill all running docker containers
-kill:
-	docker ps | grep -v CONTAINER | awk '{print $$1}' | xargs -n 1 docker kill
+# Run this in a separate terminal window, after starting the system
+# You should only need to do this once, although you will have to run
+# subsequent database migrations manually, if any are required (or just
+# recreate the database container)
+init-dev:
+	docker-compose -f docker-compose-dev.yml exec fees-dev rails db:setup
+	docker-compose -f docker-compose-dev.yml exec datacapture-dev rails db:setup
 
 # Help in setting up the environment variables required to access the S3 bucket (see bucket-ls)
 env-uploader:
@@ -36,6 +49,9 @@ bucket-ls:
 	s3cmd --access_key=$${AWS_ACCESS_KEY_ID} --secret_key=$${AWS_SECRET_ACCESS_KEY}   ls -r s3://$${BUCKET_NAME}
 
 test:
-	docker exec -it taxtribunalsdockercompose_datacapture_1 rails r 'PaymentUrl.new(case_reference: "TC/2016/00064", confirmation_code: "CAPFXY").call!'
+	docker exec -it taxtribunalsdockercompose_datacapture_1 rails r 'res = PaymentUrl.new(case_reference: "TC/2016/00064", confirmation_code: "CAPFXY").call!; puts res.inspect'
+
+test-dev:
+	docker-compose -f docker-compose-dev.yml run datacapture-dev rails r 'res = PaymentUrl.new(case_reference: "TC/2016/00064", confirmation_code: "CAPFXY").call!; puts res.inspect'
 
 .PHONY: test
