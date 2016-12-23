@@ -1,12 +1,23 @@
 version: '2'
 services:
+  fees:
+    # https://github.com/ministryofjustice/tax-tribunals-fees
+    build: tax-tribunals-fees/
+    env_file: .env.fees
+    links:
+      - fees-db:db
+    ports:
+      - "4000:3000"
+    volumes:
+      - ./tax-tribunals-fees/run.sh:/usr/src/app/run.sh
   datacapture:
     # https://github.com/ministryofjustice/tax-tribunals-datacapture
     build: tax-tribunals-datacapture/
     env_file: .env.datacapture
     links:
-      - uploader
       - datacapture-db:db
+      - uploader
+      - fees
     ports:
       - "3000:3000"
     volumes:
@@ -39,4 +50,6 @@ services:
     ports:
       - 8080:8080
   datacapture-db:
+    image: postgres
+  fees-db:
     image: postgres

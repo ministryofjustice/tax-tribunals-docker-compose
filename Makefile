@@ -9,9 +9,18 @@ run:
 # subsequent database migrations manually, if any are required (or just
 # recreate the database container)
 init:
+	make init-datacapture
+	make init-fees
+
+init-datacapture:
 	docker-compose exec datacapture rails db:setup
 	docker-compose exec datacapture rails assets:clobber
 	docker-compose exec datacapture rails assets:precompile
+
+init-fees:
+	docker-compose exec fees rails db:setup
+	docker-compose exec fees rails assets:clobber
+	docker-compose exec fees rails assets:precompile
 
 # Kill all running docker containers
 kill:
@@ -26,3 +35,7 @@ env-uploader:
 bucket-ls:
 	s3cmd --access_key=$${AWS_ACCESS_KEY_ID} --secret_key=$${AWS_SECRET_ACCESS_KEY}   ls -r s3://$${BUCKET_NAME}
 
+test:
+	docker exec -it taxtribunalsdockercompose_datacapture_1 rails r 'PaymentUrl.new(case_reference: "TC/2016/00064", confirmation_code: "CAPFXY").call!'
+
+.PHONY: test
