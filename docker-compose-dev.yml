@@ -1,3 +1,7 @@
+# This is similar to docker-compose.yml, but with all the component services running
+# in development mode, with their source code mounted as volumes within the docker
+# containers, so that changes are applied in realtime, without requiring a rebuild &
+# restart cycle.
 version: '2'
 services:
   fees-dev:
@@ -12,6 +16,7 @@ services:
       - "4000:3000"
     volumes:
       - ./tax-tribunals-fees:/usr/src/app
+      - ./logs/fees:/usr/src/app/log
   fees-db:
     image: postgres
 
@@ -29,6 +34,7 @@ services:
       - "3000:3000"
     volumes:
       - ./tax-tribunals-datacapture:/usr/src/app
+      - ./logs/datacapture:/usr/src/app/log
   datacapture-db:
     image: postgres
 

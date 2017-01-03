@@ -1,17 +1,27 @@
 build:
 	docker-compose build
 
+# Run the whole system, with each container running in
+# production mode, and with the source code built into
+# the container.
 up:
 	docker-compose up
 
 down:
 	docker-compose down
 
+# Run the whole system, with each container running in
+# development mode, and with the source code volume-
+# mounted into the container, so that changes show up
+# immediately.
 dev-up:
 	docker-compose -f docker-compose-dev.yml up
 
 dev-down:
 	docker-compose -f docker-compose-dev.yml down
+
+dev-tail:
+	find logs/ -name '*.log' | xargs tail -f
 
 # Run this in a separate terminal window, after starting the system
 # You should only need to do this once, although you will have to run
