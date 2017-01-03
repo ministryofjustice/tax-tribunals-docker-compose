@@ -51,7 +51,7 @@ init-dev:
 
 # Help in setting up the environment variables required to access the S3 bucket (see bucket-ls)
 env-uploader:
-	cat env.mojfile-uploader | sed 's/^/export /' > .env.mojfile-uploader; echo "Now run: source .env.mojfile-uploader"
+	cat .env.mojfile-uploader | sed 's/^/export /' > .tmp; echo "Now run: source .tmp"
 
 # Recursively list all the files in the S3 bucket
 # You need to set your environment variables first (see env-uploader)

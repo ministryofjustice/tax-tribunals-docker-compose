@@ -17,7 +17,7 @@ including all the different component services.
 
 `make build`
 
-`make run`
+`make up`
 
 `make init` in a separate terminal window
 
