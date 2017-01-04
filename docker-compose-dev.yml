@@ -1,27 +1,43 @@
+# This is similar to docker-compose.yml, but with all the component services running
+# in development mode, with their source code mounted as volumes within the docker
+# containers, so that changes are applied in realtime, without requiring a rebuild &
+# restart cycle.
 version: '2'
 services:
-  fees:
+  fees-dev:
     # https://github.com/ministryofjustice/tax-tribunals-fees
-    build: tax-tribunals-fees/
-    env_file: .env.fees
+    build:
+      context: tax-tribunals-fees/
+      dockerfile: Dockerfile.development
+    env_file: .env.fees-dev
     links:
       - fees-db:db
     ports:
       - "4000:3000"
     volumes:
-      - ./tax-tribunals-fees/run.sh:/usr/src/app/run.sh
-  datacapture:
+      - ./tax-tribunals-fees:/usr/src/app
+      - ./logs/fees:/usr/src/app/log
+  fees-db:
+    image: postgres
+
+  datacapture-dev:
     # https://github.com/ministryofjustice/tax-tribunals-datacapture
-    build: tax-tribunals-datacapture/
-    env_file: .env.datacapture
+    build:
+      context: tax-tribunals-datacapture/
+      dockerfile: Dockerfile.development
+    env_file: .env.datacapture-dev
     links:
       - datacapture-db:db
+      - fees-dev
       - uploader
-      - fees
     ports:
       - "3000:3000"
     volumes:
-      - ./tax-tribunals-datacapture/run.sh:/usr/src/app/run.sh
+      - ./tax-tribunals-datacapture:/usr/src/app
+      - ./logs/datacapture:/usr/src/app/log
+  datacapture-db:
+    image: postgres
+
   # Uploader API
   uploader:
     # https://github.com/ministryofjustice/mojfile-uploader
@@ -49,7 +65,3 @@ services:
       - clamav
     ports:
       - 8080:8080
-  datacapture-db:
-    image: postgres
-  fees-db:
-    image: postgres
