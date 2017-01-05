@@ -11,6 +11,12 @@ up:
 down:
 	docker-compose down
 
+start:
+	docker-compose start
+
+stop:
+	docker-compose stop
+
 tail:
 	find logs/ -name '*.log' | xargs tail -F
 
@@ -20,7 +26,9 @@ tail:
 # recreate the database container)
 init:
 	docker-compose exec fees rails db:setup
+	docker-compose exec fees rails db:migrate
 	docker-compose exec datacapture rails db:setup
+	docker-compose exec datacapture rails db:migrate
 
 init-datacapture:
 	docker-compose exec datacapture rails db:setup
