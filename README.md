@@ -21,7 +21,10 @@ including all the different component services.
 
 `make init` in a separate terminal window
 
-Now you should be able to interact with the system at `http://localhost:3000`
+Now you should be able to interact with the system;
+
+* Data Capture - `http://localhost:3000`
+* Fee Payment - `http://localhost:4000`
 
 ## Notes
 
