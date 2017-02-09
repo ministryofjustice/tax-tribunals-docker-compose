@@ -8,10 +8,27 @@ including all the different component services.
 * A `mojfile-uploader` symlink to a checkout of `https://github.com/ministryofjustice/mojfile-uploader`
 * A `tax-tribunals-datacapture` symlink to a checkout of `https://github.com/ministryofjustice/tax-tribunals-datacapture`
 * A `tax-tribunals-fees` symlink to a checkout of `https://github.com/ministryofjustice/tax-tribunals-fees`
-* An S3 bucket plus appropriate IAM users/policies for the uploader/downloader (see `http://github.com/ministryofjustice/s3-bucket-setup`)
+* An S3 bucket plus appropriate IAM users/policies for the uploader/downloader (see `http://github.com/ministryofjustice/s3-bucket-setup`).
 * An `.env.datacapture` file for the environment variables required by the datacapture application (see env.datacapture.example)
 * An `.env.fees` file for the environment variables required by the fees application (see env.fees.example)
 * An `.env.mojfile-uploader` file for the environment variables required by the mojfile-uploader application (see env.mojfile-uploader.example)
+
+## To setup from scratch;
+
+This assumes that S3 bucket setup has already been done.
+
+git clone https://github.com/ministryofjustice/tax-tribunals-docker-compose
+git clone https://github.com/ministryofjustice/mojfile-uploader
+git clone https://github.com/ministryofjustice/tax-tribunals-datacapture
+git clone https://github.com/ministryofjustice/tax-tribunals-fees
+
+cd tax-tribunals-docker-compose
+
+Create suitable env files (see examples in this repo), or get them from another developer
+
+* .env.datacapture
+* .env.fees
+* .env.mojfile-uploader
 
 ## Usage
 
