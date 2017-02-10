@@ -3,6 +3,13 @@
 This project aims to provide a way for developers to run the entire system locally,
 including all the different component services.
 
+Currently, to run the system fully standalone, please use the commands
+postfixed with `-emulators` as described in in ***Usage***, below.
+
+After the system is built and running, this set of commands will give
+you a development/test system that does not require external network
+connectivity.
+
 ## Pre-requisites
 
 * A `mojfile-uploader` symlink to a checkout of `https://github.com/ministryofjustice/mojfile-uploader`
@@ -13,35 +20,42 @@ including all the different component services.
 * An `.env.fees` file for the environment variables required by the fees application (see env.fees.example)
 * An `.env.mojfile-uploader` file for the environment variables required by the mojfile-uploader application (see env.mojfile-uploader.example)
 
+### To run with MoJfile Uploader and GLiMR emulators
+
+* A `mojfile-uploader-emulator` symlink to a checkout of `https://github.com/ministryofjustice/mojfile-uploader-emulator`
+* A `glimr-emulator` symlink to a checkout of `https://github.com/ministryofjustice/glimr-emulator`
+
 ## To setup from scratch;
 
 This assumes that S3 bucket setup has already been done.
 
 git clone https://github.com/ministryofjustice/tax-tribunals-docker-compose
 git clone https://github.com/ministryofjustice/mojfile-uploader
+git clone https://github.com/ministryofjustice/mojfile-uploader-emulator (optional)
 git clone https://github.com/ministryofjustice/tax-tribunals-datacapture
 git clone https://github.com/ministryofjustice/tax-tribunals-fees
+git clone https://github.com/ministryofjustice/glimr-emulator (optional)
 
 cd tax-tribunals-docker-compose
 
 Create suitable env files (see examples in this repo), or get them from another developer
 
 * .env.datacapture
-* .env.fees
 * .env.mojfile-uploader
+
+* .env.datacapture.emulators
 
 ## Usage
 
-`make build`
+`make build` or `make build-emulators`
 
-`make up`
+`make up` or `make up-emulators`
 
-`make init` in a separate terminal window
+`make init` or `make init-emulators` in a separate terminal window
 
 Now you should be able to interact with the system;
 
 * Data Capture - `http://localhost:3000`
-* Fee Payment - `http://localhost:4000`
 
 ## Notes
 
