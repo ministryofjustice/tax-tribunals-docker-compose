@@ -1,6 +1,9 @@
 build:
 	docker-compose build
 
+build-emulators:
+	docker-compose --file docker-compose-with-emulators.yml build
+
 # Run the whole system, with each container running in
 # development mode, and with the source code volume-
 # mounted into the container, so that changes show up
@@ -8,14 +11,26 @@ build:
 up:
 	docker-compose up
 
+up-emulators:
+	docker-compose --file docker-compose-with-emulators.yml up
+
 down:
 	docker-compose down
+
+down-emulators:
+	docker-compose --file docker-compose-with-emulators.yml down
 
 start:
 	docker-compose start
 
+start-emulators:
+	docker-compose --file docker-compose-with-emulators.yml start
+
 stop:
 	docker-compose stop
+
+stop-emulators:
+	docker-compose --file docker-compose-with-emulators.yml stop
 
 tail:
 	find logs/ -name '*.log' | xargs tail -F
@@ -25,20 +40,13 @@ tail:
 # subsequent database migrations manually, if any are required (or just
 # recreate the database container)
 init:
-	docker-compose exec fees rails db:setup
-	docker-compose exec fees rails db:migrate
 	docker-compose exec datacapture rails db:setup
 	docker-compose exec datacapture rails db:migrate
 
-init-datacapture:
-	docker-compose exec datacapture rails db:setup
-	docker-compose exec datacapture rails assets:clobber
-	docker-compose exec datacapture rails assets:precompile
-
-init-fees:
-	docker-compose exec fees rails db:setup
-	docker-compose exec fees rails assets:clobber
-	docker-compose exec fees rails assets:precompile
+init-emulators:
+	docker-compose --file docker-compose-with-emulators.yml exec datacapture rails db:setup
+	docker-compose --file docker-compose-with-emulators.yml exec datacapture rails assets:clobber
+	docker-compose --file docker-compose-with-emulators.yml exec datacapture rails assets:precompile
 
 # Help in setting up the environment variables required to access the S3 bucket (see bucket-ls)
 env-uploader:

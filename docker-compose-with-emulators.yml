@@ -9,10 +9,11 @@ services:
     build:
       context: tax-tribunals-datacapture/
       dockerfile: Dockerfile.development
-    env_file: .env.datacapture
+    env_file: .env.datacapture.emulators
     links:
       - datacapture-db:db
       - uploader
+      - glimr
     ports:
       - "3000:3000"
     volumes:
@@ -21,30 +22,16 @@ services:
   datacapture-db:
     image: postgres
 
-  # Uploader API
+  # Uploader API Emulator
   uploader:
     # https://github.com/ministryofjustice/mojfile-uploader
-    build: mojfile-uploader
-    entrypoint: puma
-    env_file: .env.mojfile-uploader
-    volumes:
-      - ./mojfile-uploader/run.sh:/usr/src/app/run.sh
+    build: mojfile-uploader-emulator
     ports:
       - "9292:9292"
-    links:
-      - clamav-rest
-  clamav:
-    # https://github.com/ministryofjustice/moj-clamav-daemon
-    image: registry.service.dsd.io/ministryofjustice/clamav:0.1.0
-  clamav-rest:
-    # https://github.com/ministryofjustice/moj-clamav-rest
-    image: registry.service.dsd.io/ministryofjustice/clamav-rest:0.1.0
-    links:
-      - clamav:clamav-server
-    environment:
-      HOST: clamav-server
-      PORT: 3310
-    depends_on:
-      - clamav
+
+  # Glimr Emulator
+  glimr:
+    # https://github.com/ministryofjustice/mojfile-uploader
+    build: glimr-emulator
     ports:
-      - 8080:8080
+      - "4567:4567"
