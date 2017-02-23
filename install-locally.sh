@@ -2,9 +2,6 @@
 
 set -euo pipefail
 
-docker=`which -s docker`
-git=`which -s git`
-
 # The directory which will be created, below the user's home
 # directory, and in which all the repos will be checked out
 DIR='tax-tribunals'
@@ -140,6 +137,8 @@ install_homebrew() {
 }
 
 install_docker() {
+  docker=`which -s docker`
+
   if [[ $docker == 0  ]] ; then
     echo "##################################################"
     echo 'Installing docker'
@@ -150,6 +149,8 @@ install_docker() {
 }
 
 install_git() {
+  git=`which -s git`
+
   if [[ $git == 0  ]] ; then
     echo "##################################################"
     echo 'Installing git'
