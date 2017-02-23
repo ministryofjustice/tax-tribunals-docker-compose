@@ -59,6 +59,15 @@ clone_tax_tribunals_docker_compose() {
     git clone https://github.com/ministryofjustice/tax-tribunals-docker-compose.git
     echo "##################################################"
     echo
+  else
+    echo "##################################################"
+    echo 'Updating tax-tribunals-docker-compose'
+    cd ./tax-tribunals-docker-compose
+    git fetch
+    git pull
+    cd ..
+    echo "##################################################"
+    echo
   fi
 }
 
@@ -81,6 +90,15 @@ clone_tax_tribunals_datacapture() {
     git clone https://github.com/ministryofjustice/tax-tribunals-datacapture.git
     echo "##################################################"
     echo
+  else
+    echo "##################################################"
+    echo 'Updating tax-tribunals-datacapture'
+    cd ./tax-tribunals-datacapture
+    git fetch
+    git pull
+    cd ..
+    echo "##################################################"
+    echo
   fi
 }
 
@@ -91,6 +109,15 @@ clone_glimr_emulator() {
     git clone https://github.com/ministryofjustice/glimr-emulator.git
     echo "##################################################"
     echo
+  else
+    echo "##################################################"
+    echo 'Updating glimr-emulator'
+    cd ./glimr-emulator
+    git fetch
+    git pull
+    cd ..
+    echo "##################################################"
+    echo
   fi
 }
 
@@ -99,6 +126,15 @@ clone_mojfile_uploader_emulator() {
     echo "##################################################"
     echo 'Checking out mojfile-uploader-emulator'
     git clone https://github.com/ministryofjustice/mojfile-uploader-emulator.git
+    echo "##################################################"
+    echo
+  else
+    echo "##################################################"
+    echo 'Updating mojfile-uploader-emulator'
+    cd ./mojfile-uploader-emulator
+    git fetch
+    git pull
+    cd ..
     echo "##################################################"
     echo
   fi
