@@ -31,23 +31,40 @@ create_directory_and_cd() {
 }
 
 clone_tax_tribunals_docker_compose() {
-  if [ ! -d "tax-tribunals-docker-compose" ]; then
+  clone_or_update_repo "tax-tribunals-docker-compose"
+}
+
+clone_tax_tribunals_datacapture() {
+  clone_or_update_repo "tax-tribunals-datacapture"
+}
+
+clone_glimr_emulator() {
+  clone_or_update_repo "glimr-emulator"
+}
+
+clone_mojfile_uploader_emulator() {
+  clone_or_update_repo "mojfile-uploader-emulator"
+}
+
+clone_or_update_repo() {
+  local readonly repo=$1
+  if [ ! -d "${repo}" ]; then
     echo "##################################################"
-    echo 'Checking out tax-tribunals-docker-compose'
-    git clone https://github.com/ministryofjustice/tax-tribunals-docker-compose.git
+    echo "Checking out ${repo}"
+    git clone https://github.com/ministryofjustice/${repo}.git
     echo "##################################################"
     echo
   else
     echo "##################################################"
-    echo 'Updating tax-tribunals-docker-compose'
-    cd ./tax-tribunals-docker-compose
+    echo "Updating ${repo}"
+    cd ./${repo}
     git fetch
     git pull
     cd ..
     echo "##################################################"
     echo
   fi
-}
+
 
 setup_dotenv_for_datacapture() {
   if [ ! -f "tax-tribunals-docker-compose/.env.datacapture.emulators" ]; then
@@ -58,63 +75,6 @@ setup_dotenv_for_datacapture() {
     echo "##################################################"
     echo
     cd ..
-  fi
-}
-
-clone_tax_tribunals_datacapture() {
-  if [ ! -d "tax-tribunals-datacapture" ]; then
-    echo "##################################################"
-    echo 'Checking out tax-tribunals-datacapture'
-    git clone https://github.com/ministryofjustice/tax-tribunals-datacapture.git
-    echo "##################################################"
-    echo
-  else
-    echo "##################################################"
-    echo 'Updating tax-tribunals-datacapture'
-    cd ./tax-tribunals-datacapture
-    git fetch
-    git pull
-    cd ..
-    echo "##################################################"
-    echo
-  fi
-}
-
-clone_glimr_emulator() {
-  if [ ! -d "glimr-emulator" ]; then
-    echo "##################################################"
-    echo 'Checking out glimr-emulator'
-    git clone https://github.com/ministryofjustice/glimr-emulator.git
-    echo "##################################################"
-    echo
-  else
-    echo "##################################################"
-    echo 'Updating glimr-emulator'
-    cd ./glimr-emulator
-    git fetch
-    git pull
-    cd ..
-    echo "##################################################"
-    echo
-  fi
-}
-
-clone_mojfile_uploader_emulator() {
-  if [ ! -d "mojfile-uploader-emulator" ]; then
-    echo "##################################################"
-    echo 'Checking out mojfile-uploader-emulator'
-    git clone https://github.com/ministryofjustice/mojfile-uploader-emulator.git
-    echo "##################################################"
-    echo
-  else
-    echo "##################################################"
-    echo 'Updating mojfile-uploader-emulator'
-    cd ./mojfile-uploader-emulator
-    git fetch
-    git pull
-    cd ..
-    echo "##################################################"
-    echo
   fi
 }
 
