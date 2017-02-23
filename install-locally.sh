@@ -5,9 +5,15 @@ set -euo pipefail
 docker=`which -s docker`
 git=`which -s git`
 
+# The directory which will be created, below the user's home
+# directory, and in which all the repos will be checked out
+DIR='tax-tribunals'
+
 main() {
   install_homebrew
   install_docker
+  install_git
+  create_directory_and_cd
   clone_tax_tribunals_docker_compose
   setup_dotenv_for_datacapture
   clone_tax_tribunals_datacapture
@@ -36,6 +42,12 @@ install_docker() {
     echo "##################################################"
     echo
   fi
+}
+
+create_directory_and_cd() {
+  cd
+  mkdir ${DIR} 2>/dev/null || true
+  cd ${DIR}
 }
 
 install_git() {
