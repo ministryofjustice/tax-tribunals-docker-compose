@@ -8,16 +8,17 @@ that window:
 bash <(curl -s https://raw.githubusercontent.com/ministryofjustice/tax-tribunals-docker-compose/master/install-locally.sh)
 ```
 
-This will install everyting you need and open your default browser on
+This will install everyting you need, and open your default browser on
 the running app when it is finished.
 
-If you need to pull in any changes to the master branch, just run the
-command again.
+If you need to pull in any changes to the master branch after you have
+completed this first installation, just run the command again in the
+same directory.
 
 ***NOTE:*** This version of the system emulates GLiMR and the MoJ file
 uploader app.  You will not be able to alter the GLiMR case, nor upload
 different files.  It ***does not*** require network connectivity to run
-once it has been installed.  It ***doof es*** require network connectivity
+once it has been installed.  It ***does*** require network connectivity
 if you want to update anything on it.
 
 # Run the Appeal to the Tax Tribunal system locally
