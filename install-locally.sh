@@ -13,6 +13,8 @@ REPOS="
   mojfile-uploader-emulator
 "
 
+DOCKER_COMPOSE_FILE='docker-compose-with-emulators.yml'
+
 main() {
   install_prerequisites
   create_directory_and_cd
@@ -81,7 +83,7 @@ stop_currently_running_containers() {
   echo 'Stopping currently running versions'
   (
     cd tax-tribunals-docker-compose
-    docker-compose --file docker-compose-with-emulators.yml down
+    docker-compose --file ${DOCKER_COMPOSE_FILE} down
   )
   echo "##################################################"
   echo
@@ -92,7 +94,7 @@ start_new_containers() {
   echo 'Starting new containers'
   (
     cd tax-tribunals-docker-compose
-    docker-compose --file docker-compose-with-emulators.yml up --build -d
+    docker-compose --file ${DOCKER_COMPOSE_FILE} up --build -d
   )
   echo "##################################################"
   echo
@@ -104,9 +106,9 @@ run_imports_and_build_assets() {
   (
     cd tax-tribunals-docker-compose
     sleep 10
-    docker-compose --file docker-compose-with-emulators.yml exec datacapture rails db:setup
-    docker-compose --file docker-compose-with-emulators.yml exec datacapture rails assets:clobber
-    docker-compose --file docker-compose-with-emulators.yml exec datacapture rails assets:precompile
+    docker-compose --file ${DOCKER_COMPOSE_FILE} exec datacapture rails db:setup
+    docker-compose --file ${DOCKER_COMPOSE_FILE} exec datacapture rails assets:clobber
+    docker-compose --file ${DOCKER_COMPOSE_FILE} exec datacapture rails assets:precompile
   )
   echo "##################################################"
   echo
@@ -127,7 +129,7 @@ finish_off() {
   echo 'Finished.'
   echo 'To stop the app run the following commands'
   echo 'cd tax-tribunals-docker-compose'
-  echo 'docker-compose --file docker-compose-with-emulators.yml stop'
+  echo "docker-compose --file ${DOCKER_COMPOSE_FILE} stop"
   echo "##################################################"
   echo "##################################################"
 echo
