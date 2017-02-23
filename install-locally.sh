@@ -9,14 +9,17 @@ git=`which -s git`
 # directory, and in which all the repos will be checked out
 DIR='tax-tribunals'
 
+REPOS="
+  tax-tribunals-docker-compose
+  tax-tribunals-datacapture
+  glimr-emulator
+  mojfile-uploader-emulator
+"
 main() {
   install_prerequisites
   create_directory_and_cd
-  clone_tax_tribunals_docker_compose
+  clone_or_update_code
   setup_dotenv_for_datacapture
-  clone_tax_tribunals_datacapture
-  clone_glimr_emulator
-  clone_mojfile_uploader_emulator
   stop_currently_running_containers
   start_new_containers
   run_imports_and_build_assets
@@ -30,20 +33,10 @@ create_directory_and_cd() {
   cd ${DIR}
 }
 
-clone_tax_tribunals_docker_compose() {
-  clone_or_update_repo "tax-tribunals-docker-compose"
-}
-
-clone_tax_tribunals_datacapture() {
-  clone_or_update_repo "tax-tribunals-datacapture"
-}
-
-clone_glimr_emulator() {
-  clone_or_update_repo "glimr-emulator"
-}
-
-clone_mojfile_uploader_emulator() {
-  clone_or_update_repo "mojfile-uploader-emulator"
+clone_or_update_code() {
+  for repo in ${REPOS}; do
+    clone_or_update_repo "${repo}"
+  done
 }
 
 clone_or_update_repo() {
@@ -64,7 +57,7 @@ clone_or_update_repo() {
     echo "##################################################"
     echo
   fi
-
+}
 
 setup_dotenv_for_datacapture() {
   if [ ! -f "tax-tribunals-docker-compose/.env.datacapture.emulators" ]; then
