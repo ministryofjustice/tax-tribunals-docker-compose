@@ -20,9 +20,7 @@ main() {
   create_directory_and_cd
   clone_or_update_code
   setup_dotenv_for_datacapture
-  stop_currently_running_containers
-  start_new_containers
-  run_imports_and_build_assets
+  start_containers
   open_in_browser
   finish_off
 }
@@ -69,6 +67,12 @@ setup_dotenv_for_datacapture() {
     echo
     cd ..
   fi
+}
+
+start_containers() {
+  stop_currently_running_containers
+  start_new_containers
+  run_imports_and_build_assets
 }
 
 stop_currently_running_containers() {
