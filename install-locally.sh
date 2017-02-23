@@ -10,9 +10,7 @@ git=`which -s git`
 DIR='tax-tribunals'
 
 main() {
-  install_homebrew
-  install_docker
-  install_git
+  install_prerequisites
   create_directory_and_cd
   clone_tax_tribunals_docker_compose
   setup_dotenv_for_datacapture
@@ -26,38 +24,10 @@ main() {
   finish_off
 }
 
-install_homebrew() {
-  echo "##################################################"
-  echo "Installing homebrew"
-  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-  echo "##################################################"
-  echo
-}
-
-install_docker() {
-  if [[ $docker == 0  ]] ; then
-    echo "##################################################"
-    echo 'Installing docker'
-    brew cask install docker
-    echo "##################################################"
-    echo
-  fi
-}
-
 create_directory_and_cd() {
   cd
   mkdir ${DIR} 2>/dev/null || true
   cd ${DIR}
-}
-
-install_git() {
-  if [[ $git == 0  ]] ; then
-    echo "##################################################"
-    echo 'Installing git'
-    brew install git
-    echo "##################################################"
-    echo
-  fi
 }
 
 clone_tax_tribunals_docker_compose() {
@@ -196,6 +166,40 @@ finish_off() {
   echo "##################################################"
   echo "##################################################"
 echo
+}
+
+install_prerequisites() {
+  install_homebrew
+  install_docker
+  install_git
+}
+
+install_homebrew() {
+  echo "##################################################"
+  echo "Installing homebrew"
+  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  echo "##################################################"
+  echo
+}
+
+install_docker() {
+  if [[ $docker == 0  ]] ; then
+    echo "##################################################"
+    echo 'Installing docker'
+    brew cask install docker
+    echo "##################################################"
+    echo
+  fi
+}
+
+install_git() {
+  if [[ $git == 0  ]] ; then
+    echo "##################################################"
+    echo 'Installing git'
+    brew install git
+    echo "##################################################"
+    echo
+  fi
 }
 
 main
