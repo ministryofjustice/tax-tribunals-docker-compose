@@ -1,7 +1,7 @@
 # Quickstart
 
 To get the master branch of the FFS app in place and runing on
-OSX, open Terminal.app or iTerm.app and paste the following command into
+OSX, open `Terminal.app` or `iTerm.app` and paste the following command into
 that window:
 
 ```bash
@@ -17,7 +17,7 @@ command again.
 ***NOTE:*** This version of the system emulates GLiMR and the MoJ file
 uploader app.  You will not be able to alter the GLiMR case, nor upload
 different files.  It ***does not*** require network connectivity to run
-once it has been installed.  It ***does*** require network connectivity
+once it has been installed.  It ***doof es*** require network connectivity
 if you want to update anything on it.
 
 # Run the Appeal to the Tax Tribunal system locally
