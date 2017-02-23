@@ -4,7 +4,6 @@ set -euo pipefail
 
 docker=`which -s docker`
 git=`which -s git`
-brew=`which -s brew`
 
 main() {
   install_homebrew
@@ -22,14 +21,11 @@ main() {
 }
 
 install_homebrew() {
-  # If git or docker are missing, then we'll need homebrew
-  if [[ $docker == 0 || $git == 0 ]] ; then
-    echo "##################################################"
-    echo "Installing homebrew"
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-    echo "##################################################"
-    echo
-  fi
+  echo "##################################################"
+  echo "Installing homebrew"
+  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  echo "##################################################"
+  echo
 }
 
 install_docker() {
