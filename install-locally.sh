@@ -12,6 +12,7 @@ REPOS="
   glimr-emulator
   mojfile-uploader-emulator
 "
+
 main() {
   install_prerequisites
   create_directory_and_cd
@@ -45,10 +46,11 @@ clone_or_update_repo() {
   else
     echo "##################################################"
     echo "Updating ${repo}"
-    cd ./${repo}
-    git fetch
-    git pull
-    cd ..
+    (
+      cd ./${repo}
+      git fetch
+      git pull
+    )
     echo "##################################################"
     echo
   fi
@@ -58,11 +60,12 @@ setup_dotenv_for_datacapture() {
   if [ ! -f "tax-tribunals-docker-compose/.env.datacapture.emulators" ]; then
     echo "##################################################"
     echo 'Setting up datacapture environment'
-    cd tax-tribunals-docker-compose
-    cp env.datacapture.emulators.example .env.datacapture.emulators
-    echo "##################################################"
-    echo
-    cd ..
+    (
+      cd tax-tribunals-docker-compose
+      cp env.datacapture.emulators.example .env.datacapture.emulators
+      echo "##################################################"
+      echo
+    )
   fi
 }
 
@@ -76,8 +79,10 @@ stop_currently_running_containers() {
   echo
   echo "##################################################"
   echo 'Stopping currently running versions'
-  cd tax-tribunals-docker-compose
-  docker-compose --file docker-compose-with-emulators.yml down
+  (
+    cd tax-tribunals-docker-compose
+    docker-compose --file docker-compose-with-emulators.yml down
+  )
   echo "##################################################"
   echo
 }
@@ -85,7 +90,10 @@ stop_currently_running_containers() {
 start_new_containers() {
   echo "##################################################"
   echo 'Starting new containers'
-  docker-compose --file docker-compose-with-emulators.yml up --build -d
+  (
+    cd tax-tribunals-docker-compose
+    docker-compose --file docker-compose-with-emulators.yml up --build -d
+  )
   echo "##################################################"
   echo
 }
@@ -93,10 +101,13 @@ start_new_containers() {
 run_imports_and_build_assets() {
   echo "##################################################"
   echo 'Running final setup tasks'
-  sleep 10
-  docker-compose --file docker-compose-with-emulators.yml exec datacapture rails db:setup
-  docker-compose --file docker-compose-with-emulators.yml exec datacapture rails assets:clobber
-  docker-compose --file docker-compose-with-emulators.yml exec datacapture rails assets:precompile
+  (
+    cd tax-tribunals-docker-compose
+    sleep 10
+    docker-compose --file docker-compose-with-emulators.yml exec datacapture rails db:setup
+    docker-compose --file docker-compose-with-emulators.yml exec datacapture rails assets:clobber
+    docker-compose --file docker-compose-with-emulators.yml exec datacapture rails assets:precompile
+  )
   echo "##################################################"
   echo
 }
