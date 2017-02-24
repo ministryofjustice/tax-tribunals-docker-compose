@@ -22,6 +22,7 @@ main() {
   setup_dotenv_for_datacapture
   start_containers
   open_in_browser
+  create_user_scripts
   finish_off
 }
 
@@ -122,6 +123,26 @@ open_in_browser() {
   echo
 }
 
+create_user_scripts() {
+  (
+    cd
+    cd ${DIR}
+    cat > start.sh <<EOF
+#!/bin/bash
+for repo in ${REPOS}; do
+  (
+    cd "\${repo}"; git pull
+  )
+done
+(
+  cd tax-tribunals-docker-compose
+  docker-compose --file ${DOCKER_COMPOSE_FILE} start
+)
+EOF
+    chmod 755 start.sh
+  )
+}
+
 finish_off() {
   echo
   echo "##################################################"
@@ -144,7 +165,7 @@ install_prerequisites() {
 install_homebrew() {
   echo "##################################################"
   echo "Installing homebrew"
-  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  # /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
   echo "##################################################"
   echo
 }
@@ -155,7 +176,7 @@ install_docker() {
   if [[ $docker == 0  ]] ; then
     echo "##################################################"
     echo 'Installing docker'
-    brew cask install docker
+    # brew cask install docker
     echo "##################################################"
     echo
   fi
@@ -167,7 +188,7 @@ install_git() {
   if [[ $git == 0  ]] ; then
     echo "##################################################"
     echo 'Installing git'
-    brew install git
+    # brew install git
     echo "##################################################"
     echo
   fi
