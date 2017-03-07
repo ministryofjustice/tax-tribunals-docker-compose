@@ -1,5 +1,5 @@
 update:
-	cd ../tax-tribunals-datacapture/; git pull
+	cd ../tax-tribunals-datacapture/; git pull; touch tmp/restart.txt
 
 build-real:
 	docker-compose build
