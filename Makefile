@@ -1,35 +1,38 @@
-build:
+update:
+	cd ../tax-tribunals-datacapture/; git pull
+
+build-real:
 	docker-compose build
 
-build-emulators:
+build:
 	docker-compose --file docker-compose-with-emulators.yml build
 
 # Run the whole system, with each container running in
 # development mode, and with the source code volume-
 # mounted into the container, so that changes show up
 # immediately.
-up:
+up-real:
 	docker-compose up
 
-up-emulators:
+up:
 	docker-compose --file docker-compose-with-emulators.yml up
 
-down:
+down-real:
 	docker-compose down
 
-down-emulators:
+down:
 	docker-compose --file docker-compose-with-emulators.yml down
 
-start:
+start-real:
 	docker-compose start
 
-start-emulators:
+start:
 	docker-compose --file docker-compose-with-emulators.yml start
 
-stop:
+stop-real:
 	docker-compose stop
 
-stop-emulators:
+stop:
 	docker-compose --file docker-compose-with-emulators.yml stop
 
 tail:
@@ -39,11 +42,11 @@ tail:
 # You should only need to do this once, although you will have to run
 # subsequent database migrations manually, if any are required (or just
 # recreate the database container)
-init:
+init-real:
 	docker-compose exec datacapture rails db:setup
 	docker-compose exec datacapture rails db:migrate
 
-init-emulators:
+init:
 	docker-compose --file docker-compose-with-emulators.yml exec datacapture rails db:setup
 	docker-compose --file docker-compose-with-emulators.yml exec datacapture rails assets:clobber
 	docker-compose --file docker-compose-with-emulators.yml exec datacapture rails assets:precompile
