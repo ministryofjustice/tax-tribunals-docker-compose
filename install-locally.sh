@@ -5,9 +5,14 @@ set -euo pipefail
 docker=`which -s docker`
 git=`which -s git`
 
+datacapture_repo="https://github.com/ministryofjustice/tax-tribunals-datacapture.git"
+docker_compose_repo="https://github.com/ministryofjustice/tax-tribunals-docker-compose.git"
+glimr_emulator="https://github.com/ministryofjustice/glimr-emulator.git"
+uploader_emulator="https://github.com/ministryofjustice/mojfile-uploader-emulator.git"
+
 main() {
-  install_homebrew
-  install_docker
+  check_if_dependencies_required
+  git_use_ssh_or_https
   clone_tax_tribunals_docker_compose
   setup_dotenv_for_datacapture
   clone_tax_tribunals_datacapture
@@ -18,6 +23,56 @@ main() {
   run_imports_and_build_assets
   open_in_browser
   finish_off
+}
+
+check_if_dependencies_required() {
+  echo "#####################################################"
+  echo "You should only need to choose 'y' the first time you"
+  echo "run this script."
+  echo "#####################################################"
+  echo
+  read -p "Install homebrew, docker and git (y/n)? " answer
+  case ${answer:0:1} in
+    y|Y )
+      install_homebrew
+      install_docker
+      install_git
+      ;;
+    * )
+      echo "##################################################"
+      echo "Skipping homebrew, docker and git."
+      echo "##################################################"
+      echo
+      ;;
+  esac
+}
+
+git_use_ssh_or_https() {
+  echo "#####################################################"
+  echo "Use SSH if you have a valid MoJ github account and"
+  echo "want to be able to send PRs to the various projects."
+  echo "If you don't know what this means, choose 'n'."
+  echo "#####################################################"
+  echo
+  read -p "Use ssh for git repos (y/n)? " answer
+  case ${answer:0:1} in
+    y|Y )
+      echo "##################################################"
+      echo "Using ssh for github repos."
+      echo "##################################################"
+      echo
+      datacapture_repo="git@github.com:ministryofjustice/tax-tribunals-datacapture.git"
+      docker_compose_repo="git@github.com:ministryofjustice/tax-tribunals-docker-compose.git"
+      glimr_emulator="git@github.com:ministryofjustice/glimr-emulator.git"
+      uploader_emulator="git@github.com:ministryofjustice/mojfile-uploader-emulator.git"
+      ;;
+    * )
+      echo "##################################################"
+      echo "Using https for github repos."
+      echo "##################################################"
+      echo
+      ;;
+  esac
 }
 
 install_homebrew() {
@@ -52,7 +107,7 @@ clone_tax_tribunals_docker_compose() {
   if [ ! -d "tax-tribunals-docker-compose" ]; then
     echo "##################################################"
     echo 'Checking out tax-tribunals-docker-compose'
-    git clone https://github.com/ministryofjustice/tax-tribunals-docker-compose.git
+    git clone $docker_compose_repo
     echo "##################################################"
     echo
   else
@@ -83,7 +138,7 @@ clone_tax_tribunals_datacapture() {
   if [ ! -d "tax-tribunals-datacapture" ]; then
     echo "##################################################"
     echo 'Checking out tax-tribunals-datacapture'
-    git clone https://github.com/ministryofjustice/tax-tribunals-datacapture.git
+    git clone $datacapture_repo
     echo "##################################################"
     echo
   else
@@ -102,7 +157,7 @@ clone_glimr_emulator() {
   if [ ! -d "glimr-emulator" ]; then
     echo "##################################################"
     echo 'Checking out glimr-emulator'
-    git clone https://github.com/ministryofjustice/glimr-emulator.git
+    git clone $glimr_emulator
     echo "##################################################"
     echo
   else
@@ -121,7 +176,7 @@ clone_mojfile_uploader_emulator() {
   if [ ! -d "mojfile-uploader-emulator" ]; then
     echo "##################################################"
     echo 'Checking out mojfile-uploader-emulator'
-    git clone https://github.com/ministryofjustice/mojfile-uploader-emulator.git
+    git clone $uploader_emulator
     echo "##################################################"
     echo
   else
@@ -183,7 +238,7 @@ finish_off() {
   echo 'docker-compose --file docker-compose-with-emulators.yml stop'
   echo "##################################################"
   echo "##################################################"
-echo
+  echo
 }
 
 main
