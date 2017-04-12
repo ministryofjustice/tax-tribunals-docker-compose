@@ -12,7 +12,6 @@ services:
     env_file: .env.datacapture.emulators
     links:
       - datacapture-db:db
-      - uploader
       - glimr
     ports:
       - "3000:3000"
@@ -21,13 +20,6 @@ services:
       - ./logs/datacapture:/usr/src/app/log
   datacapture-db:
     image: postgres
-
-  # Uploader API Emulator
-  uploader:
-    # https://github.com/ministryofjustice/mojfile-uploader
-    build: mojfile-uploader-emulator
-    ports:
-      - "9292:9292"
 
   # Glimr Emulator
   glimr:
